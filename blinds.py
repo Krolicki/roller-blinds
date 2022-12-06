@@ -11,8 +11,6 @@ step_sleep = 0.002
  
 step_count = 4096  #5.625*(1/64) per step, 4096 steps is 360°
  
-direction = False # True for clockwise, False for counter-clockwise
- 
 # defining stepper motor sequence (found in documentation http://www.4tronix.co.uk/arduino/Stepper-Motors.php)
 step_sequence = [[1,0,0,1],
                  [1,0,0,0],
@@ -38,8 +36,6 @@ GPIO.output( in4, GPIO.LOW )
  
  
 motor_pins = [in1,in2,in3,in4]
-motor_step_counter = 0 ;
- 
  
 def cleanup():
     GPIO.output( in1, GPIO.LOW )
@@ -48,22 +44,28 @@ def cleanup():
     GPIO.output( in4, GPIO.LOW )
     GPIO.cleanup()
  
- 
-try:
+def forward(steps):
     i = 0
-    for i in range(step_count):
+    motor_step_counter = 0
+    for i in range(steps):
         for pin in range(0, len(motor_pins)):
             GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
-        if direction==True:
-            motor_step_counter = (motor_step_counter - 1) % 8
-        elif direction==False:
-            motor_step_counter = (motor_step_counter + 1) % 8
-        else:
-            print( "direction should *always* be either True or False" )
-            cleanup()
-            exit( 1 )
+        motor_step_counter = (motor_step_counter - 1) % 8
         time.sleep( step_sleep )
  
+def backwards(steps):
+    i = 0
+    motor_step_counter = 0
+    for i in range(steps):
+        for pin in range(0, len(motor_pins)):
+            GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
+        motor_step_counter = (motor_step_counter + 1) % 8
+        time.sleep( step_sleep )
+
+try:
+    forward(1024)
+    #backwards(1024)
+
 except KeyboardInterrupt:
     cleanup()
     exit( 1 )
