@@ -9,7 +9,7 @@ in4 = 22
 # careful lowering this, at some point you run into the mechanical limitation of how quick your motor can move
 step_sleep = 0.002
  
-step_count = 4096  #5.625*(1/64) per step, 4096 steps is 360°
+step_count = 4096  #5.625*(1/64) per step, 4096 steps is 360°, 1 step = +-5 cm
  
 # defining stepper motor sequence (found in documentation http://www.4tronix.co.uk/arduino/Stepper-Motors.php)
 step_sequence = [[1,0,0,1],
@@ -53,7 +53,7 @@ def forward(steps):
         motor_step_counter = (motor_step_counter - 1) % 8
         time.sleep( step_sleep )
  
-def backwards(steps):
+def backward(steps):
     i = 0
     motor_step_counter = 0
     for i in range(steps):
@@ -63,8 +63,11 @@ def backwards(steps):
         time.sleep( step_sleep )
 
 try:
-    forward(1024)
-    #backwards(1024)
+    print("start")
+    #time.sleep(4)
+    #forward(2048)
+    #backward(1024)
+    #backward(4096 *37 - 1024)
 
 except KeyboardInterrupt:
     cleanup()
