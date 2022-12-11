@@ -68,20 +68,33 @@ def roll(steps, direction):
         motor_step_counter = (motor_step_counter + d) % 8
         steps_count += d
         time.sleep( step_sleep )
+        
+def read_steps():
+    global steps_count
+    f = open("/home/pi/scripts/roller-blinds/steps_count.txt","r")
+    steps_count = int(f.readline())
+    f.close()
+        
+def save_steps():
+    global steps_count
+    f = open("/home/pi/scripts/roller-blinds/steps_count.txt","w")#write mode
+    f.write(str(steps_count))
+    f.close()
 
 try:
     print("start")
     #time.sleep(4)
-    #roll_up(4096)
     move = True
-    x = threading.Thread(target=roll, args=(1024,'down'))
+    read_steps()
+    print(steps_count)
+    x = threading.Thread(target=roll, args=(2048,'down'))
     x.start()
     print(steps_count)
     #time.sleep(1)
     #move = False
-    time.sleep(3)
+    time.sleep(5)
+    save_steps()
     print(steps_count)
-    #roll_down(4096 *37 - 1024)
 
 except KeyboardInterrupt:
     cleanup()
