@@ -49,18 +49,8 @@ def cleanup():
     GPIO.output( in4, GPIO.LOW )
     GPIO.cleanup()
  
-def roll_up(steps):
-    global steps_count
-    i = 0
-    motor_step_counter = 0
-    for i in range(steps):
-        #for pin in range(0, len(motor_pins)):
-            #GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
-        motor_step_counter = (motor_step_counter - 1) % 8
-        steps_count -= 1
-        time.sleep( step_sleep )
  
-def roll_down(steps, direction):
+def roll(steps, direction):
     global steps_count
     i = 0
     motor_step_counter = 0
@@ -84,7 +74,7 @@ try:
     #time.sleep(4)
     #roll_up(4096)
     move = True
-    x = threading.Thread(target=roll_down, args=(1024,'down'))
+    x = threading.Thread(target=roll, args=(1024,'down'))
     x.start()
     print(steps_count)
     #time.sleep(1)
