@@ -11,6 +11,8 @@ in4 = 22
 step_sleep = 0.002
  
 full_step = 4096  #5.625*(1/64) per step, 4096 steps is 360°, 1 step = +-5 cm
+
+max_step = 151552 #4096 * 37
  
 # defining stepper motor sequence (found in documentation http://www.4tronix.co.uk/arduino/Stepper-Motors.php)
 step_sequence = [[1,0,0,1],
@@ -57,8 +59,12 @@ def roll(steps, direction):
     d = 0
     if(direction == 'up'):
         d = -1
+        if(steps_count <= 0):
+            return
     elif(direction == 'down'):
         d = 1
+        if(steps_count >= max_step):
+            return
     for i in range(steps):
         global move
         if(move == False):
@@ -68,6 +74,9 @@ def roll(steps, direction):
         motor_step_counter = (motor_step_counter + d) % 8
         steps_count += d
         time.sleep( step_sleep )
+        if(steps_count <= 0 or steps_count >= max_step):
+            print("stop")
+            break
         
 def read_steps():
     global steps_count
@@ -87,7 +96,7 @@ try:
     move = True
     read_steps()
     print(steps_count)
-    x = threading.Thread(target=roll, args=(2048,'down'))
+    x = threading.Thread(target=roll, args=(2048,'up'))
     x.start()
     print(steps_count)
     #time.sleep(1)
