@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 import threading
+from flask import Flask, render_template
  
 in1 = 17
 in2 = 18
@@ -43,6 +44,8 @@ GPIO.output( in4, GPIO.LOW )
  
  
 motor_pins = [in1,in2,in3,in4]
+
+app = Flask(__name__)
  
 def cleanup():
     GPIO.output( in1, GPIO.LOW )
@@ -90,24 +93,40 @@ def save_steps():
     f.write(str(steps_count))
     f.close()
 
+@app.route('/')
+def index():
+    global steps_count
+    return render_template('index.html', steps = steps_count)
+
+@app.route("/roll-up", methods=["POST"])
+def roll_up():
+    return "up"
+
+@app.route("/roll-down", methods=["POST"])
+def roll_down():
+    return "down"
+
 try:
-    print("start")
-    #time.sleep(4)
-    move = True
-    read_steps()
-    print(steps_count)
-    x = threading.Thread(target=roll, args=(2048,'up'))
-    x.start()
-    print(steps_count)
-    #time.sleep(1)
-    #move = False
-    time.sleep(5)
-    save_steps()
-    print(steps_count)
+     print("start")
+#     #time.sleep(4)
+#     move = True
+#     read_steps()
+#     print(steps_count)
+#     x = threading.Thread(target=roll, args=(2048,'up'))
+#     x.start()
+#     print(steps_count)
+#     #time.sleep(1)
+#     #move = False
+#     time.sleep(5)
+#     save_steps()
+#     print(steps_count)
 
 except KeyboardInterrupt:
     cleanup()
     exit( 1 )
  
-cleanup()
-exit( 0 )
+# cleanup()
+# exit( 0 )
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000, host='0.0.0.0')
