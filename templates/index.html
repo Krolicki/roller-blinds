@@ -9,11 +9,12 @@
 </head>
 <body>
 	<div class="app">
-		<a id="steps">{{ steps }}</a><BR>
-		<button id="roll-up">OTWÓRZ</button>
-    <br>
-    <button id="roll-down">ZAMKNIJ</button>
-    <button id="abort">ZATRZYMAJ</button>
+		<p id="steps">{{ steps }}</p>
+		<div class="buttons-wraper">
+			<button id="roll-up">OTWÓRZ</button>
+			<button id="roll-down">ZAMKNIJ</button>
+			<button id="abort">ZATRZYMAJ</button>
+    </div>
 	</div>
 
 	<script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
