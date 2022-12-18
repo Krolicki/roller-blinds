@@ -8,11 +8,12 @@
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 </head>
 <body>
-	<div class="App">
+	<div class="app">
 		<a id="steps">{{ steps }}</a><BR>
 		<button id="roll-up">OTWÓRZ</button>
     <br>
     <button id="roll-down">ZAMKNIJ</button>
+    <button id="abort">ZATRZYMAJ</button>
 	</div>
 
 	<script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>

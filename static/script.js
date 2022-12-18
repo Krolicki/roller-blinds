@@ -5,8 +5,9 @@ const makeRequest = (action) => {
 	const request = new XMLHttpRequest()
 				request.open('POST', `/${action}`)
 				request.onload = () => {
-						const response = request.responseText
-						document.getElementById('steps').innerHTML = response
+						const response = request
+						console.log(response)
+						document.getElementById('steps').innerHTML = response.responseText
 				}; 
 				request.send()
 }

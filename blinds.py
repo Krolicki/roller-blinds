@@ -9,7 +9,8 @@ in3 = 27
 in4 = 22
  
 # careful lowering this, at some point you run into the mechanical limitation of how quick your motor can move
-step_sleep = 0.002
+#step_sleep = 0.002
+step_sleep = 0.2
  
 full_step = 4096  #5.625*(1/64) per step, 4096 steps is 360°, 1 step = +-5 cm
 
@@ -57,28 +58,34 @@ def cleanup():
  
 def roll(steps, direction):
     global steps_count
+    global move
     i = 0
     motor_step_counter = 0
     d = 0
     if(direction == 'up'):
         d = -1
         if(steps_count <= 0):
+            move = False
             return
     elif(direction == 'down'):
         d = 1
         if(steps_count >= max_step):
+            move = False
             return
+    move = True
     for i in range(steps):
-        global move
+        #global move
         if(move == False):
             break
         #for pin in range(0, len(motor_pins)):
             #GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
         motor_step_counter = (motor_step_counter + d) % 8
         steps_count += d
+        print(steps_count)
         time.sleep( step_sleep )
         if(steps_count <= 0 or steps_count >= max_step):
             print("stop")
+            move = False
             break
         
 def read_steps():
@@ -100,11 +107,31 @@ def index():
 
 @app.route("/roll-up", methods=["POST"])
 def roll_up():
-    return "up"
+    global steps_count
+    global move
+    if(move == True):
+        move = False
+        time.sleep( step_sleep )
+    x = threading.Thread(target=roll, args=(steps_count,'up'))
+    x.start()
+    return str(steps_count)
 
 @app.route("/roll-down", methods=["POST"])
 def roll_down():
-    return "down"
+    global steps_count
+    global move
+    if(move == True):
+        move = False
+        time.sleep( step_sleep )
+    x = threading.Thread(target=roll, args=(10000-steps_count,'down'))#max_step-steps_count
+    x.start()
+    return str(steps_count)
+
+@app.route("/abort", methods=["POST"])
+def abort():
+    global move
+    move = False
+    return str(steps_count)
 
 try:
      print("start")
