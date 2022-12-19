@@ -53,7 +53,7 @@ def cleanup():
     GPIO.output( in2, GPIO.LOW )
     GPIO.output( in3, GPIO.LOW )
     GPIO.output( in4, GPIO.LOW )
-    GPIO.cleanup()
+    #GPIO.cleanup()
  
  
 def roll(steps, direction):
@@ -76,6 +76,7 @@ def roll(steps, direction):
     for i in range(steps):
         #global move
         if(move == False):
+            save_steps()
             break
         #for pin in range(0, len(motor_pins)):
             #GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
@@ -86,6 +87,8 @@ def roll(steps, direction):
         if(steps_count <= 0 or steps_count >= max_step):
             print("stop")
             move = False
+            cleanup()
+            save_steps()
             break
         
 def read_steps():
@@ -130,7 +133,10 @@ def roll_down():
 @app.route("/abort", methods=["POST"])
 def abort():
     global move
-    move = False
+    if(move == True):
+        move = False
+        cleanup()
+        save_steps()
     return str(steps_count)
 
 try:
@@ -156,4 +162,5 @@ except KeyboardInterrupt:
 # exit( 0 )
 
 if __name__ == '__main__':
+    read_steps()
     app.run(debug=True, port=5000, host='0.0.0.0')
