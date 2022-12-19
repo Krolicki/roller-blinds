@@ -3,6 +3,12 @@ html, body{
 	height: 100%;
 	margin: 0;
 	padding: 0;
+	font-family: Verdana, arial;
+}
+
+body{
+	background: rgb(159,193,255);
+	background: radial-gradient(circle, rgba(159,193,255,1) 20%, rgba(171,220,255,1) 49%, rgba(241,218,255,1) 100%);
 }
 
 *{
@@ -17,13 +23,39 @@ html, body{
 }
 
 .app{
-	padding: 5vh 5vw;
+	padding: 5vh 6vw;
 }
 .buttons-wraper{
-	gap: 20px;
+	gap: 6vw;
+}
+.buttons-square-row{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.buttons-square-row button{
+	width: 41vw;
+	font-size: 2rem;
+	border-radius: 20px;
+	border: none;
+	background: rgba(255,255,255,1);
+}
+.buttons-square-row button:before {
+  content: "";
+  display: block;
+  padding-bottom: 40%;
+}
+.buttons-square-row button:after {
+  content: "";
+  display: block;
+  padding-top: 40%;
 }
 
-.buttons-wraper button{
-	padding: 20px;
+.abort-button{
 	font-size: 2rem;
+  width: 100%;
+  padding-block: 20px;
+	border-radius: 20px;
+	border: none;
+	background: rgba(247, 113, 2,0.9);
 }
