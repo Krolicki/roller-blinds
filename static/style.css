@@ -23,6 +23,7 @@ body{
 }
 
 .app{
+	max-width: 920px;
 	padding: 5vh 6vw;
 }
 .buttons-wraper{
@@ -34,7 +35,7 @@ body{
 	justify-content: space-between;
 }
 .buttons-square-row button{
-	width: 41vw;
+	width: 45%;
 	font-size: 2rem;
 	border-radius: 20px;
 	border: none;
