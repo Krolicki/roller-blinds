@@ -2,6 +2,7 @@ const rollUpButton = document.getElementById('roll-up')
 const rollDownButton = document.getElementById('roll-down')
 const abortButton = document.getElementById('abort')
 const stepsField = document.getElementById('steps')
+const progressBar = document.querySelector('.progress-bar')
 
 let rollInterval = null
 
@@ -33,19 +34,20 @@ const getSteps = async () => {
 const getRollProgress = async () =>{
 		let currentStep = await getSteps()
 				console.log(currentStep)
+		let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
+		progressBar.style.height = `${progress}%`
 		if(currentStep.move == true){
-			let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
-			stepsField.innerHTML = `Stopień otwarcia: ${progress}%`
+			stepsField.innerHTML = `Otwarcie: ${progress}%`
+			progressBar.style.height = `${progress}%`
 			setTimeout(getRollProgress, 2000);
 		}
 		else{
 			if(currentStep.step == 0)
-				stepsField.innerHTML = 'Status: Otwarte'
+				stepsField.innerHTML = 'Otwarte'
 			else if(currentStep.step == maxStep)
-				stepsField.innerHTML = 'Status: Zamknięte'
+				stepsField.innerHTML = 'Zamknięte'
 			else{
-				let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
-				stepsField.innerHTML = `Stopień otwarcia: ${progress}%`
+				stepsField.innerHTML = `Otwarcie: ${progress}%`
 			}
 		}
 }

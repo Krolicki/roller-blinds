@@ -26,6 +26,33 @@ body{
 	max-width: 920px;
 	padding: 5vh 6vw;
 }
+
+.progress{
+	width: 100%;
+	height: 40vh;
+	padding: 0;
+	background: white;
+	border-radius: 20px;
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 6vw;
+}
+.progress-bar{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: #f2aa52;
+	transition: height .2s ease-out;
+}
+.progres-status{
+	position: absolute;
+	margin: 0;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%);
+	font-size: 5vw;
+}
 .buttons-wraper{
 	gap: 6vw;
 }
