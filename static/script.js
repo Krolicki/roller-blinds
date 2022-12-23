@@ -4,8 +4,6 @@ const abortButton = document.getElementById('abort')
 const stepsField = document.getElementById('steps')
 const progressBar = document.querySelector('.progress-bar')
 
-let rollInterval = null
-
 const makeRequest = (action) => {
 	console.log(action)
 	const request = new XMLHttpRequest()
@@ -40,6 +38,10 @@ const getRollProgress = async () =>{
 			stepsField.innerHTML = `Otwarcie: ${progress}%`
 			progressBar.style.height = `${progress}%`
 			setTimeout(getRollProgress, 2000);
+			if(currentStep.direction === 'up' && !rollUpButton.classList.contains('activeAction'))
+				rollUpButton.classList.add('activeAction')
+			if(currentStep.direction === 'down' && !rollDownButton.classList.contains('activeAction'))
+				rollDownButton.classList.add('activeAction')
 		}
 		else{
 			if(currentStep.step == 0)
@@ -49,6 +51,10 @@ const getRollProgress = async () =>{
 			else{
 				stepsField.innerHTML = `Otwarcie: ${progress}%`
 			}
+			if(rollUpButton.classList.contains('activeAction'))
+				rollUpButton.classList.remove('activeAction')
+			if(rollDownButton.classList.contains('activeAction'))
+				rollDownButton.classList.remove('activeAction')
 		}
 }
 

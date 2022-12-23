@@ -30,6 +30,8 @@ steps_count = 0 # steps form top
 
 move = False
 
+direction = None
+
 # setting up
 GPIO.setmode( GPIO.BCM )
 GPIO.setup( in1, GPIO.OUT )
@@ -111,9 +113,11 @@ def index():
 def roll_up():
     global steps_count
     global move
+    global direction
     if(move == True):
         move = False
         time.sleep( step_sleep )
+    direction = "up"
     x = threading.Thread(target=roll, args=(steps_count,'up'))
     x.start()
     return str(steps_count)
@@ -122,9 +126,11 @@ def roll_up():
 def roll_down():
     global steps_count
     global move
+    global direction
     if(move == True):
         move = False
         time.sleep( step_sleep )
+    direction = "down"
     x = threading.Thread(target=roll, args=(max_step-steps_count,'down'))
     x.start()
     return str(steps_count)
@@ -134,6 +140,7 @@ def abort():
     global move
     if(move == True):
         move = False
+        direction = None
         cleanup()
         save_steps()
     return str(steps_count)
@@ -142,8 +149,9 @@ def abort():
 def steps():
     global steps_count
     global move
+    global direction
     #return str(steps_count)
-    return jsonify({'step': steps_count,'move': move})
+    return jsonify({'step': steps_count,'move': move, 'direction': direction})
 
 try:
      print("start")
