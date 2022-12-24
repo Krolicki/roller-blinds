@@ -116,7 +116,7 @@ def roll_up():
     global direction
     if(move == True):
         move = False
-        time.sleep( step_sleep )
+        time.sleep( step_sleep * 2)
     direction = "up"
     x = threading.Thread(target=roll, args=(steps_count,'up'))
     x.start()
@@ -129,7 +129,7 @@ def roll_down():
     global direction
     if(move == True):
         move = False
-        time.sleep( step_sleep )
+        time.sleep( step_sleep * 2)
     direction = "down"
     x = threading.Thread(target=roll, args=(max_step-steps_count,'down'))
     x.start()

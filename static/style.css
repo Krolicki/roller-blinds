@@ -14,7 +14,9 @@ body{
 *{
 	box-sizing: border-box;
 }
-
+button{
+	-webkit-tap-highlight-color: transparent;
+}
 .app, .buttons-wraper{
 	width: 100%;
 	display: flex;
@@ -68,6 +70,7 @@ body{
 	border-radius: 20px;
 	border: none;
 	background: rgba(255,255,255,1);
+	transition: background .4s;
 	cursor: pointer;
 }
 .buttons-square-row button:before {
@@ -79,6 +82,9 @@ body{
   content: "";
   display: block;
   padding-top: 20%;
+}
+.buttons-square-row button:active {
+	background: rgba(40, 145, 237, 1);
 }
 .buttons-square-row span{
 	display: block;

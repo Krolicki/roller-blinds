@@ -11,6 +11,7 @@ const makeRequest = (action) => {
 				request.onload = () => {
 						const response = request
 						console.log(response)
+						getRollProgress()
 				}; 
 				request.send()
 }
@@ -60,15 +61,12 @@ const getRollProgress = async () =>{
 
 rollUpButton.addEventListener("click", () => {
 			makeRequest('roll-up')
-			getRollProgress()
 })
 rollDownButton.addEventListener("click", () => {
 			makeRequest('roll-down')
-			getRollProgress()
 })
 abortButton.addEventListener("click", () => {
 			makeRequest('abort')
-			getRollProgress()
 })
 //document.querySelector('.buttons-wraper').querySelectorAll('button')forEach(button => {
 		//button.addEventListener("click", () => {
