@@ -93,6 +93,10 @@ button{
 .activeAction{
 	animation: activeAnimation 1.5s ease-out infinite;
 }
+.disabledButton{
+	pointer-events: none;
+	background: rgba(255,255,255,.5) !important;
+}
 .abort-button{
 	font-size: 5vw;
   width: 100%;

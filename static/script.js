@@ -39,10 +39,18 @@ const getRollProgress = async () =>{
 			stepsField.innerHTML = `Otwarcie: ${progress}%`
 			progressBar.style.height = `${progress}%`
 			setTimeout(getRollProgress, 2000);
-			if(currentStep.direction === 'up' && !rollUpButton.classList.contains('activeAction'))
+			if(currentStep.direction === 'up' && !rollUpButton.classList.contains('activeAction')){
 				rollUpButton.classList.add('activeAction')
-			if(currentStep.direction === 'down' && !rollDownButton.classList.contains('activeAction'))
+				rollDownButton.classList.add('disabledButton')
+				if(rollDownButton.classList.contains('activeAction'))
+					rollDownButton.classList.remove('activeAction')
+			}
+			if(currentStep.direction === 'down' && !rollDownButton.classList.contains('activeAction')){
 				rollDownButton.classList.add('activeAction')
+				rollUpButton.classList.add('disabledButton')
+				if(rollUpButton.classList.contains('activeAction'))
+					rollUpButton.classList.remove('activeAction')
+			}
 		}
 		else{
 			if(currentStep.step == 0)
@@ -54,8 +62,12 @@ const getRollProgress = async () =>{
 			}
 			if(rollUpButton.classList.contains('activeAction'))
 				rollUpButton.classList.remove('activeAction')
+			if(rollUpButton.classList.contains('disabledButton'))
+				rollUpButton.classList.remove('disabledButton')
 			if(rollDownButton.classList.contains('activeAction'))
 				rollDownButton.classList.remove('activeAction')
+			if(rollDownButton.classList.contains('disabledButton'))
+				rollDownButton.classList.remove('disabledButton')
 		}
 }
 
