@@ -5,12 +5,11 @@ const stepsField = document.getElementById('steps')
 const progressBar = document.querySelector('.progress-bar')
 
 const makeRequest = (action) => {
-	console.log(action)
+	stepsField.innerHTML = "Wysyłanie..."
 	const request = new XMLHttpRequest()
 				request.open('POST', `/${action}`)
 				request.onload = () => {
 						const response = request
-						console.log(response)
 						getRollProgress()
 				}; 
 				request.send()
@@ -26,13 +25,11 @@ const getSteps = async () => {
 		.catch((err)=>{
 			console.log(err)
 		})
-		console.log(currentStep)
 		return currentStep
 }
 
 const getRollProgress = async () =>{
 		let currentStep = await getSteps()
-				console.log(currentStep)
 		let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
 		progressBar.style.height = `${progress}%`
 		if(currentStep.move == true){
