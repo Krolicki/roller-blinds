@@ -14,8 +14,8 @@ step_sleep = 0.001
  
 full_step = 4096  #5.625*(1/64) per step, 4096 steps is 360°, 1 step = +-5 cm
 
-max_step = 150862 #
-#max_step = 1000
+max_step = 150862
+
 # defining stepper motor sequence (found in documentation http://www.4tronix.co.uk/arduino/Stepper-Motors.php)
 step_sequence = [[1,0,0,1],
                  [1,0,0,0],
