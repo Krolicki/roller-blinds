@@ -9,13 +9,13 @@ in3 = 27
 in4 = 22
  
 # careful lowering this, at some point you run into the mechanical limitation of how quick your motor can move
-#step_sleep = 0.002
-step_sleep = 0.02
+step_sleep = 0.001
+#step_sleep = 0.02
  
 full_step = 4096  #5.625*(1/64) per step, 4096 steps is 360°, 1 step = +-5 cm
 
-#max_step = 151552 #4096 * 37
-max_step = 1000
+max_step = 150862 #
+#max_step = 1000
 # defining stepper motor sequence (found in documentation http://www.4tronix.co.uk/arduino/Stepper-Motors.php)
 step_sequence = [[1,0,0,1],
                  [1,0,0,0],
@@ -91,9 +91,9 @@ def roll(steps, direction):
         if(move == False):
             save_steps()
             break
-        #for pin in range(0, len(motor_pins)):
-            #GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
-        motor_step_counter = (motor_step_counter + d) % 8
+        for pin in range(0, len(motor_pins)):
+            GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
+        motor_step_counter = (motor_step_counter + (d * -1)) % 8
         steps_count += d
         print(steps_count)
         time.sleep( step_sleep )
