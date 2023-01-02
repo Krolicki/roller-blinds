@@ -3,20 +3,20 @@ import time
 import threading
 from flask import Flask, render_template, jsonify
  
+# pin sterownika = pin GPIO
 in1 = 17
 in2 = 18
 in3 = 27
 in4 = 22
- 
-# careful lowering this, at some point you run into the mechanical limitation of how quick your motor can move
+
+# odstęp pomiędzy krokami, prędkość silnika
 step_sleep = 0.001
-#step_sleep = 0.02
  
-full_step = 4096  #5.625*(1/64) per step, 4096 steps is 360°, 1 step = +-5 cm
+full_step = 4096 # 5.625*(1/64) na krok, 4096 kroków to 360°, 360° = +-5 cm
 
-max_step = 150862
+max_step = 150862 # całkowita ilość kroków do otwarcia rolety
 
-# defining stepper motor sequence (found in documentation http://www.4tronix.co.uk/arduino/Stepper-Motors.php)
+# sekwencja silnika krokowego
 step_sequence = [[1,0,0,1],
                  [1,0,0,0],
                  [1,1,0,0],
@@ -26,20 +26,21 @@ step_sequence = [[1,0,0,1],
                  [0,0,1,1],
                  [0,0,0,1]]
  
-steps_count = 0 # steps form top
+steps_count = 0 # licznik kroków od góry
 
 move = False
 
 direction = None
 
-# setting up
+# definiowanie pinów
+GPIO.setwarnings(False)
 GPIO.setmode( GPIO.BCM )
 GPIO.setup( in1, GPIO.OUT )
 GPIO.setup( in2, GPIO.OUT )
 GPIO.setup( in3, GPIO.OUT )
 GPIO.setup( in4, GPIO.OUT )
  
-# initializing
+# inicjalizacja
 GPIO.output( in1, GPIO.LOW )
 GPIO.output( in2, GPIO.LOW )
 GPIO.output( in3, GPIO.LOW )
@@ -56,16 +57,18 @@ def cleanup():
     GPIO.output( in3, GPIO.LOW )
     GPIO.output( in4, GPIO.LOW )
     #GPIO.cleanup()
-        
+
+#odczytywanie ilości kroków z pliku
 def read_steps():
     global steps_count
     f = open("/home/pi/scripts/roller-blinds/steps_count.txt","r")
     steps_count = int(f.readline())
     f.close()
-        
+    
+# zapisywanie ilości kroków do pliku
 def save_steps():
     global steps_count
-    f = open("/home/pi/scripts/roller-blinds/steps_count.txt","w")#write mode
+    f = open("/home/pi/scripts/roller-blinds/steps_count.txt","w") #tryb nadpisywania
     f.write(str(steps_count))
     f.close()
 
@@ -95,7 +98,6 @@ def roll(steps, direction):
             GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
         motor_step_counter = (motor_step_counter + (d * -1)) % 8
         steps_count += d
-        print(steps_count)
         time.sleep( step_sleep )
         if(steps_count <= 0 or steps_count >= max_step):
             print("stop")
@@ -150,31 +152,13 @@ def steps():
     global steps_count
     global move
     global direction
-    #return str(steps_count)
     return jsonify({'step': steps_count,'move': move, 'direction': direction})
 
 try:
-     print("start")
-#     #time.sleep(4)
-#     move = True
-#     read_steps()
-#     print(steps_count)
-#     x = threading.Thread(target=roll, args=(2048,'up'))
-#     x.start()
-#     print(steps_count)
-#     #time.sleep(1)
-#     #move = False
-#     time.sleep(5)
-#     save_steps()
-#     print(steps_count)
-
+    if __name__ == '__main__':
+        read_steps()
+        app.run(debug=True, port=5000, host='0.0.0.0')
+        
 except KeyboardInterrupt:
     cleanup()
     exit( 1 )
- 
-# cleanup()
-# exit( 0 )
-
-if __name__ == '__main__':
-    read_steps()
-    app.run(debug=True, port=5000, host='0.0.0.0')

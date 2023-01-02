@@ -1,7 +1,7 @@
 const rollUpButton = document.getElementById('roll-up')
 const rollDownButton = document.getElementById('roll-down')
 const abortButton = document.getElementById('abort')
-const stepsField = document.getElementById('steps')
+const stepsField = document.getElementById('progres-status')
 const progressBar = document.querySelector('.progress-bar')
 
 const makeRequest = (action) => {
@@ -33,7 +33,7 @@ const getRollProgress = async () =>{
 		let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
 		progressBar.style.height = `${progress}%`
 		if(currentStep.move == true){
-			stepsField.innerHTML = `Otwarcie: ${progress}%`
+			stepsField.innerHTML = `Zamknięcie: ${progress}%`
 			progressBar.style.height = `${progress}%`
 			setTimeout(getRollProgress, 2000);
 			if(currentStep.direction === 'up' && !rollUpButton.classList.contains('activeAction')){
@@ -55,7 +55,7 @@ const getRollProgress = async () =>{
 			else if(currentStep.step == maxStep)
 				stepsField.innerHTML = 'Zamknięte'
 			else{
-				stepsField.innerHTML = `Otwarcie: ${progress}%`
+				stepsField.innerHTML = `Zamknięcie: ${progress}%`
 			}
 			if(rollUpButton.classList.contains('activeAction'))
 				rollUpButton.classList.remove('activeAction')
