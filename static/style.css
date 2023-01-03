@@ -7,8 +7,11 @@ html, body{
 }
 
 body{
-	background: rgb(159,193,255);
-	background: radial-gradient(circle, rgba(159,193,255,1) 20%, rgba(171,220,255,1) 49%, rgba(241,218,255,1) 100%);
+	overflow: hidden;
+	background: url('back.jpg');
+	background-size: cover;      
+  background-repeat: no-repeat;
+  background-position: center center;    
 }
 
 *{
@@ -30,12 +33,14 @@ button{
 }
 h1{
 	margin-top: 0;
+	color: white;
 }
 .progress{
 	width: 100%;
 	height: 40vh;
 	padding: 0;
-	background: white;
+	background: rgba(255,255,255, .7);
+	backdrop-filter: blur(5px);
 	border-radius: 20px;
 	position: relative;
 	overflow: hidden;
@@ -45,8 +50,9 @@ h1{
 	position: absolute;
 	top: 0;
 	left: 0;
+	border:none;
 	width: 100%;
-	background: #f2aa52;
+	background: rgba(242, 170, 82, .7);
 	transition: height .2s ease-out;
 }
 .progres-status{
@@ -56,6 +62,10 @@ h1{
 	left: 50%;
 	text-align: center;
 	transform: translate(-50%,-50%);
+	-webkit-user-select: none;  
+  -moz-user-select: none;  
+  -ms-user-select: none;  
+  user-select: none;   
 	font-size: 6vw;
 }
 .buttons-wraper{
@@ -71,7 +81,8 @@ h1{
 	font-size: 5vw;
 	border-radius: 20px;
 	border: none;
-	background: rgba(255,255,255,1);
+	background: rgba(255,255,255,.7);
+	backdrop-filter: blur(5px);
 	transition: background .4s;
 	cursor: pointer;
 	position: relative;
@@ -87,7 +98,7 @@ h1{
   padding-top: 50%;
 }
 .buttons-square-row button:active {
-	background: rgba(40, 145, 237, 1);
+	background: rgba(40, 145, 237, .9);
 }
 .buttons-square-row p{
 	position: absolute;
@@ -103,10 +114,11 @@ h1{
 }
 .activeAction{
 	animation: activeAnimation 1.5s ease-out infinite;
+	pointer-events: none;
 }
 .disabledButton{
 	pointer-events: none;
-	background: rgba(255,255,255,.5) !important;
+	background: rgba(200,200,200,.4) !important;
 }
 .abort-button{
 	font-size: 5vw;
@@ -114,11 +126,12 @@ h1{
   padding-block: 20px;
 	border-radius: 20px;
 	border: none;
-	background: rgba(247, 113, 2,0.9);
+	background: rgba(255, 112, 2,0.7);
+	backdrop-filter: blur(5px);
 	cursor: pointer;
 }
 .abort-button:active{
-	background: rgba(255, 97, 2,0.95);
+	background: rgba(255, 65, 0,0.95);
 }
 @keyframes activeAnimation{
   0% {
@@ -133,4 +146,36 @@ h1{
   100% {
 		background: rgba(255,255,255,1);
   }
+}
+@media screen and (min-width: 920px){
+	.app{
+		max-width: 920px;
+		max-height: 100vh;
+		justify-content: center;
+		margin-inline: auto;
+	}
+	.progress{
+		margin-bottom: 3vh;
+	}
+	.buttons-wraper{
+		gap: 3vh;
+	}
+	.buttons-square-row button{
+		width: 48.5%;
+	}
+	.progres-status, 
+	.buttons-square-row button,
+	.abort-button
+	{
+		font-size: 4vmin;
+	}
+	.buttons-square-row span{
+		font-size: 7vmin;
+	}
+	.buttons-square-row button:before {
+		padding-bottom: 30%;
+	}	
+	.buttons-square-row button:after {
+		padding-top: 30%;
+	}
 }
