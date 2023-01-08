@@ -15,6 +15,11 @@
   - in3 - GPIO 27 (PIN 13)
   - in4 - GPIO 22 (PIN 15)
 
+- Czujnik światła GRL-12503
+  - zasilanie 3V - PIN 1 PWR
+  - masa - PIN 9
+  - sygnał cyfrowy - GPIO 2 (PIN 3)
+
 W folderze folderze [3d_print](3d_print) znajdują się modele do drukarki 3D.
 
 _Serwer działa na porcie 5000_

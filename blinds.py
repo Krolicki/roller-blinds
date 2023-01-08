@@ -2,12 +2,6 @@ import RPi.GPIO as GPIO
 import time
 import threading
 from flask import Flask, render_template, jsonify
- 
-# pin sterownika = pin GPIO
-in1 = 17
-in2 = 18
-in3 = 27
-in4 = 22
 
 # odstęp pomiędzy krokami, prędkość silnika
 step_sleep = 0.001
@@ -32,6 +26,15 @@ move = False
 
 direction = None
 
+# pin sterownika silnika = pin GPIO
+in1 = 17
+in2 = 18
+in3 = 27
+in4 = 22
+
+# pin czujnika światła
+light_sensor = 2
+
 # definiowanie pinów
 GPIO.setwarnings(False)
 GPIO.setmode( GPIO.BCM )
@@ -39,6 +42,7 @@ GPIO.setup( in1, GPIO.OUT )
 GPIO.setup( in2, GPIO.OUT )
 GPIO.setup( in3, GPIO.OUT )
 GPIO.setup( in4, GPIO.OUT )
+GPIO.setup( light_sensor, GPIO.IN )
  
 # inicjalizacja
 GPIO.output( in1, GPIO.LOW )
@@ -71,6 +75,11 @@ def save_steps():
     f = open("/home/pi/scripts/roller-blinds/steps_count.txt","w") #tryb nadpisywania
     f.write(str(steps_count))
     f.close()
+
+# pobieranie odczytu z czujnika światła, 1 = jest ciemno, 0 = jest jasno
+def get_light():
+    light = GPIO.input(light_sensor)
+    print (light)
 
 def roll(steps, direction):
     global steps_count
@@ -156,6 +165,7 @@ def steps():
 
 try:
     if __name__ == '__main__':
+        get_light()
         read_steps()
         app.run(debug=True, port=5000, host='0.0.0.0')
         
