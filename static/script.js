@@ -2,7 +2,12 @@ const rollUpButton = document.getElementById('roll-up')
 const rollDownButton = document.getElementById('roll-down')
 const abortButton = document.getElementById('abort')
 const stepsField = document.getElementById('progres-status')
+const mainRollersStatus = document.getElementById('main-rollers-status')
 const progressBar = document.querySelector('.progress-bar')
+const mainScreen = document.querySelector('.main')
+const blindsControlScreen = document.querySelector('.blinds-control')
+const backArrow = document.querySelector('.left-arrow')
+const blindsButton = document.getElementById('blinds-button')
 
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -36,7 +41,9 @@ const getRollProgress = async () =>{
 		let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
 		progressBar.style.height = `${progress}%`
 		if(currentStep.move == true){
-			stepsField.innerHTML = `Zamknięcie: ${progress}%`
+			let status = `Zamknięcie: ${progress}%`
+			stepsField.innerHTML = status
+			mainRollersStatus.innerHTML = status
 			progressBar.style.height = `${progress}%`
 			setTimeout(getRollProgress, 2000);
 			if(currentStep.direction === 'up' && !rollUpButton.classList.contains('activeAction')){
@@ -53,12 +60,21 @@ const getRollProgress = async () =>{
 			}
 		}
 		else{
-			if(currentStep.step == 0)
-				stepsField.innerHTML = 'Otwarte'
-			else if(currentStep.step == maxStep)
-				stepsField.innerHTML = 'Zamknięte'
+			if(currentStep.step == 0){
+				let status = 'Otwarte'
+				stepsField.innerHTML = status
+				mainRollersStatus.innerHTML = status
+			}
+
+			else if(currentStep.step == maxStep){
+				let status = 'Zamknięte'
+				stepsField.innerHTML = status
+				mainRollersStatus.innerHTML = status
+			}
 			else{
-				stepsField.innerHTML = `Zamknięcie: ${progress}%`
+				let status = `Zamknięcie: ${progress}%`
+				stepsField.innerHTML = status
+				mainRollersStatus.innerHTML = status
 			}
 			if(rollUpButton.classList.contains('activeAction'))
 				rollUpButton.classList.remove('activeAction')
@@ -79,6 +95,14 @@ rollDownButton.addEventListener("click", () => {
 })
 abortButton.addEventListener("click", () => {
 			makeRequest('abort')
+})
+blindsButton.addEventListener("click", () => {
+			mainScreen.classList.add('hide-main')
+			blindsControlScreen.classList.add('show-screen')
+})
+backArrow.addEventListener("click", () => {
+			mainScreen.classList.remove('hide-main')
+			blindsControlScreen.classList.remove('show-screen')
 })
 //document.querySelector('.buttons-wraper').querySelectorAll('button')forEach(button => {
 		//button.addEventListener("click", () => {

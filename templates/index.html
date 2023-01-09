@@ -12,17 +12,20 @@
 		<div class="main">
 			<div class="main-element">
 				<p class="title-text">Rolety</p>
-				<p class="status-text">Zamknięte</p>
-				<button class="main-button">Kontrola rolet</button>
+				<p class="status-text" id="main-rollers-status">Zamknięte</p>
+				<button class="main-button" id="blinds-button">Kontrola rolet</button>
 			</div>
 			<div class="main-element">
 				<p class="title-text">Światło</p>
-				<p class="status-text">Zaświecone</p>
+				<p class="status-text">[status]</p>
 				<button class="main-button">Zgaś</button>
 			</div>
 		</div>
 		<div class="blinds-control">
-			<h1>Kontrola rolet</h1>
+			<div class="blinds-header">
+				<p class="left-arrow">&#10140;</p>
+				<p>Kontrola rolet</p>
+			</div>
 			<div class="progress">
 				<div class="progress-bar"></div>
 				<p class="progres-status" id="progres-status">Wczytywanie...</p>
