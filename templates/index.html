@@ -9,17 +9,31 @@
 </head>
 <body>
 	<div class="app">
-		<h1>Kontrola rolet</h1>
-		<div class="progress">
-			<div class="progress-bar"></div>
-			<p class="progres-status" id="progres-status">Wczytywanie...</p>
-		</div>
-		<div class="buttons-wraper">
-			<div class="buttons-square-row">
-				<button id="roll-up"><p><span>↥</span>OTWÓRZ</p></button>
-				<button id="roll-down"><p><span>↧</span>ZAMKNIJ</p></button>
+		<div class="main">
+			<div class="main-element">
+				<p class="title-text">Rolety</p>
+				<p class="status-text">Zamknięte</p>
+				<button class="main-button">Kontrola rolet</button>
 			</div>
-			<button class="abort-button" id="abort">ZATRZYMAJ</button>
+			<div class="main-element">
+				<p class="title-text">Światło</p>
+				<p class="status-text">Zaświecone</p>
+				<button class="main-button">Zgaś</button>
+			</div>
+		</div>
+		<div class="blinds-control">
+			<h1>Kontrola rolet</h1>
+			<div class="progress">
+				<div class="progress-bar"></div>
+				<p class="progres-status" id="progres-status">Wczytywanie...</p>
+			</div>
+			<div class="buttons-wraper">
+				<div class="buttons-square-row">
+					<button id="roll-up"><p><span>↥</span>OTWÓRZ</p></button>
+					<button id="roll-down"><p><span>↧</span>ZAMKNIJ</p></button>
+				</div>
+				<button class="abort-button" id="abort">ZATRZYMAJ</button>
+			</div>
     </div>
 	</div>
 	<script>

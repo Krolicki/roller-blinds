@@ -4,6 +4,9 @@ const abortButton = document.getElementById('abort')
 const stepsField = document.getElementById('progres-status')
 const progressBar = document.querySelector('.progress-bar')
 
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
 const makeRequest = (action) => {
 	stepsField.innerHTML = "Wysyłanie..."
 	const request = new XMLHttpRequest()
