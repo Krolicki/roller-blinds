@@ -73,6 +73,9 @@ button{
 	margin-top: auto;
 	cursor: pointer;
 }
+.main-button:active{
+	background: #424242ba;
+}
 .blinds-control{
 	width: 100%;
 	padding: 5vw;
@@ -99,6 +102,9 @@ button{
 	line-height: 9vw;
 	color: black;
 	cursor: pointer;
+}
+.left-arrow:active{
+	color: #424242 !important;
 }
 .progress{
 	width: 100%;
@@ -224,10 +230,16 @@ hide-control{
 }
 @media screen and (min-width: 920px){
 	.app{
-		max-width: 920px;
+		max-width: 100%;
 		max-height: 100vh;
+		position: relative;
 		justify-content: center;
+		flex-direction: row;
 		margin-inline: auto;
+		padding: 5vh calc(50vw - 460px);
+	}
+	.main{
+		transition: opacity .3s;
 	}
 	.progress{
 		margin-bottom: 3vh;
@@ -252,5 +264,47 @@ hide-control{
 	}	
 	.buttons-square-row button:after {
 		padding-top: 30%;
+	}
+	.left-arrow{
+		line-height: 6vmin;
+		font-size: 6vh;
+	}
+	.blinds-control{
+		opacity: 0;
+		pointer-events: none;
+		max-width: 920px;
+		transform: translateX(0%);
+		transition: opacity .3s;
+		left: calc(50vw - 460px);
+		padding: 2vh;
+	}
+	.blinds-header{
+		font-size: 6vmin;
+		margin-bottom: 3vh;
+	}
+	.title-text{
+	font-size: 6vmin;
+	}
+	.status-text{
+		font-size: 5vmin;
+	}
+	.main-button{
+		font-size: 4vmin;
+		padding: 4vmin 3%;
+	}
+	.hide-main{
+		opacity: 0;
+		transform: none;
+		pointer-events: none;
+	}
+	.show-screen{
+		opacity: 1;
+		pointer-events: unset;
+		transform: none;
+	}
+	hide-control{
+		opacity: 0;
+		transform: none;
+		pointer-events: none;
 	}
 }
