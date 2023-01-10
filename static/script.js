@@ -3,22 +3,38 @@ const rollDownButton = document.getElementById('roll-down')
 const abortButton = document.getElementById('abort')
 const stepsField = document.getElementById('progres-status')
 const mainRollersStatus = document.getElementById('main-rollers-status')
+const lightStatusField = document.getElementById('light-status')
 const progressBar = document.querySelector('.progress-bar')
 const mainScreen = document.querySelector('.main')
 const blindsControlScreen = document.querySelector('.blinds-control')
 const backArrow = document.querySelector('.left-arrow')
 const blindsButton = document.getElementById('blinds-button')
+const lightButton = document.getElementById('light-button')
 
 let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty('--vh', `${vh}px`);
 
-const makeRequest = (action) => {
+const makeRollersRequest = (action) => {
 	stepsField.innerHTML = "Wysyłanie..."
 	const request = new XMLHttpRequest()
 				request.open('POST', `/${action}`)
 				request.onload = () => {
 						const response = request
 						getRollProgress()
+				}; 
+				request.send()
+}
+
+const makeLightRequest = (action) => {
+	const request = new XMLHttpRequest()
+				request.open('POST', `/light/${action}`)
+				request.onload = () => {
+						const response = request.response
+						if(response === "True")
+							lightStatus = true
+						else
+							lightStatus = false
+						setLightStatus()
 				}; 
 				request.send()
 }
@@ -34,6 +50,17 @@ const getSteps = async () => {
 			console.log(err)
 		})
 		return currentStep
+}
+
+const setLightStatus = () => {
+		if(lightStatus === true){
+			lightStatusField.innerHTML = "Zapalone"
+			lightButton.innerHTML = "Zgaś"
+		}
+		else{
+			lightStatusField.innerHTML = "Zgaszone"
+			lightButton.innerHTML = "Zapal"
+		}
 }
 
 const getRollProgress = async () =>{
@@ -88,13 +115,13 @@ const getRollProgress = async () =>{
 }
 
 rollUpButton.addEventListener("click", () => {
-			makeRequest('roll-up')
+			makeRollersRequest('roll-up')
 })
 rollDownButton.addEventListener("click", () => {
-			makeRequest('roll-down')
+			makeRollersRequest('roll-down')
 })
 abortButton.addEventListener("click", () => {
-			makeRequest('abort')
+			makeRollersRequest('abort')
 })
 blindsButton.addEventListener("click", () => {
 			mainScreen.classList.add('hide-main')
@@ -104,6 +131,16 @@ backArrow.addEventListener("click", () => {
 			mainScreen.classList.remove('hide-main')
 			blindsControlScreen.classList.remove('show-screen')
 })
+lightButton.addEventListener("click", () => {
+			lightStatusField.innerHTML = "Wysyłanie"
+			if(lightStatus === true){
+				makeLightRequest('off')
+			}
+			else{
+				makeLightRequest('on')
+			}
+			
+})
 //document.querySelector('.buttons-wraper').querySelectorAll('button')forEach(button => {
 		//button.addEventListener("click", () => {
 			//makeRequest(button.id)
@@ -111,3 +148,4 @@ backArrow.addEventListener("click", () => {
 		//})
 //})
 getRollProgress()
+setLightStatus()

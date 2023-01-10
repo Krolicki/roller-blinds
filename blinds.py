@@ -26,6 +26,8 @@ move = False
 
 direction = None
 
+light_status = False
+
 # pin sterownika silnika = pin GPIO
 in1 = 17
 in2 = 18
@@ -35,6 +37,9 @@ in4 = 22
 # pin czujnika światła
 light_sensor = 2
 
+# pin przekaźnika
+relay = 23
+
 # definiowanie pinów
 GPIO.setwarnings(False)
 GPIO.setmode( GPIO.BCM )
@@ -43,6 +48,7 @@ GPIO.setup( in2, GPIO.OUT )
 GPIO.setup( in3, GPIO.OUT )
 GPIO.setup( in4, GPIO.OUT )
 GPIO.setup( light_sensor, GPIO.IN )
+GPIO.setup( relay, GPIO.OUT)
  
 # inicjalizacja
 GPIO.output( in1, GPIO.LOW )
@@ -118,7 +124,8 @@ def roll(steps, direction):
 @app.route('/')
 def index():
     global steps_count
-    return render_template('index.html', steps = steps_count, maxStep = max_step, sleep = step_sleep)
+    global light_status
+    return render_template('index.html', steps = steps_count, maxStep = max_step, sleep = step_sleep, light_status = light_status)
 
 @app.route("/roll-up", methods=["POST"])
 def roll_up():
@@ -155,6 +162,19 @@ def abort():
         cleanup()
         save_steps()
     return str(steps_count)
+
+@app.route("/light/<action>", methods=["POST"])
+def light(action):
+    global light_status
+    if(action == "on"):
+        if(light_status==False):
+          light_status = True
+          GPIO.output(relay, True) 
+    if(action == "off"):
+        if(light_status==True):
+          light_status = False
+          GPIO.output(relay, False)
+    return str(light_status)
 
 @app.route('/steps', methods=['GET'])
 def steps():

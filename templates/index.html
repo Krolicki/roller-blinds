@@ -12,13 +12,13 @@
 		<div class="main">
 			<div class="main-element">
 				<p class="title-text">Rolety</p>
-				<p class="status-text" id="main-rollers-status">Zamknięte</p>
+				<p class="status-text" id="main-rollers-status">Wczytywanie</p>
 				<button class="main-button" id="blinds-button">Kontrola rolet</button>
 			</div>
 			<div class="main-element">
 				<p class="title-text">Światło</p>
-				<p class="status-text">[status]</p>
-				<button class="main-button">Zgaś</button>
+				<p class="status-text" id="light-status">Wczytywanie</p>
+				<button class="main-button" id="light-button">Wczytywanie</button>
 			</div>
 		</div>
 		<div class="blinds-control">
@@ -42,6 +42,12 @@
 	<script>
 		const sleep = {{ sleep }}
 		const maxStep = {{ maxStep }}
+		let lightStatus
+		{%if light_status == 0 %}
+			lightStatus = false
+		{% else %}
+			lightStatus = true
+		{% endif %}
 	</script>
 	<script type="text/javascript" src="{{url_for('static', filename='script.js')}}"></script>
 </body>
