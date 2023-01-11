@@ -84,8 +84,11 @@ def save_steps():
 
 # pobieranie odczytu z czujnika światła, 1 = jest ciemno, 0 = jest jasno
 def get_light():
+    global light_status
     light = GPIO.input(light_sensor)
-    print (light)
+    if(light == 1):
+        if(not light_status):
+            GPIO.output(relay, True)
 
 def roll(steps, direction):
     global steps_count
@@ -119,6 +122,7 @@ def roll(steps, direction):
             move = False
             cleanup()
             save_steps()
+            get_light()
             break
 
 @app.route('/')
