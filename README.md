@@ -15,6 +15,11 @@
   - in3 - GPIO 27 (PIN 13)
   - in4 - GPIO 22 (PIN 15)
 
+- Moduł przekaźnika Iduino JQC-3FF-S-Z
+  - zasilanie 5V - PIN 2 PWR
+  - masa - PIN 14
+  - sygnał - GPIO 23 (PIN 16)
+
 - Czujnik światła GRL-12503
   - zasilanie 3V - PIN 1 PWR
   - masa - PIN 9
