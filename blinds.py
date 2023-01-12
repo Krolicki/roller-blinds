@@ -55,7 +55,7 @@ GPIO.output( in1, GPIO.LOW )
 GPIO.output( in2, GPIO.LOW )
 GPIO.output( in3, GPIO.LOW )
 GPIO.output( in4, GPIO.LOW )
- 
+GPIO.output( relay, GPIO.LOW )
  
 motor_pins = [in1,in2,in3,in4]
 
@@ -89,6 +89,7 @@ def get_light():
     if(light == 1):
         if(not light_status):
             GPIO.output(relay, True)
+            light_status = True
 
 def roll(steps, direction):
     global steps_count
@@ -122,7 +123,8 @@ def roll(steps, direction):
             move = False
             cleanup()
             save_steps()
-            get_light()
+            if(direction == 'down'):
+                get_light()
             break
 
 @app.route('/')
@@ -180,16 +182,17 @@ def light(action):
           GPIO.output(relay, False)
     return str(light_status)
 
-@app.route('/steps', methods=['GET'])
+@app.route('/status', methods=['GET'])
 def steps():
     global steps_count
     global move
     global direction
-    return jsonify({'step': steps_count,'move': move, 'direction': direction})
+    global light_status
+    return jsonify({'step': steps_count,'move': move, 'direction': direction, 'light_status' : light_status})
 
 try:
     if __name__ == '__main__':
-        get_light()
+        #get_light():
         read_steps()
         app.run(debug=True, port=5000, host='0.0.0.0')
         

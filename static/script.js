@@ -39,8 +39,8 @@ const makeLightRequest = (action) => {
 				request.send()
 }
 
-const getSteps = async () => {
-		let currentStep = await fetch('/steps')
+const getStatus = async () => {
+		let currentStatus = await fetch('/status')
 		.then(response => {
 				if (response.ok)
 						return response.json()
@@ -49,7 +49,7 @@ const getSteps = async () => {
 		.catch((err)=>{
 			console.log(err)
 		})
-		return currentStep
+		return currentStatus
 }
 
 const setLightStatus = () => {
@@ -64,22 +64,22 @@ const setLightStatus = () => {
 }
 
 const getRollProgress = async () =>{
-		let currentStep = await getSteps()
-		let progress = ((currentStep.step / maxStep) * 100).toFixed(0)
+		let currentStatus = await getStatus()
+		let progress = ((currentStatus.step / maxStep) * 100).toFixed(0)
 		progressBar.style.height = `${progress}%`
-		if(currentStep.move == true){
+		if(currentStatus.move == true){
 			let status = `Zamknięcie: ${progress}%`
 			stepsField.innerHTML = status
 			mainRollersStatus.innerHTML = status
 			progressBar.style.height = `${progress}%`
 			setTimeout(getRollProgress, 2000);
-			if(currentStep.direction === 'up' && !rollUpButton.classList.contains('activeAction')){
+			if(currentStatus.direction === 'up' && !rollUpButton.classList.contains('activeAction')){
 				rollUpButton.classList.add('activeAction')
 				rollDownButton.classList.add('disabledButton')
 				if(rollDownButton.classList.contains('activeAction'))
 					rollDownButton.classList.remove('activeAction')
 			}
-			if(currentStep.direction === 'down' && !rollDownButton.classList.contains('activeAction')){
+			if(currentStatus.direction === 'down' && !rollDownButton.classList.contains('activeAction')){
 				rollDownButton.classList.add('activeAction')
 				rollUpButton.classList.add('disabledButton')
 				if(rollUpButton.classList.contains('activeAction'))
@@ -87,13 +87,13 @@ const getRollProgress = async () =>{
 			}
 		}
 		else{
-			if(currentStep.step == 0){
+			if(currentStatus.step == 0){
 				let status = 'Otwarte'
 				stepsField.innerHTML = status
 				mainRollersStatus.innerHTML = status
 			}
 
-			else if(currentStep.step == maxStep){
+			else if(currentStatus.step == maxStep){
 				let status = 'Zamknięte'
 				stepsField.innerHTML = status
 				mainRollersStatus.innerHTML = status
@@ -103,6 +103,8 @@ const getRollProgress = async () =>{
 				stepsField.innerHTML = status
 				mainRollersStatus.innerHTML = status
 			}
+			lightStatus = currentStatus.light_status
+			setLightStatus()
 			if(rollUpButton.classList.contains('activeAction'))
 				rollUpButton.classList.remove('activeAction')
 			if(rollUpButton.classList.contains('disabledButton'))
