@@ -78,6 +78,7 @@ button{
 }
 .blinds-control{
 	width: 100%;
+	max-height: calc(var(--vh, 1vh) * 100);
 	padding: 5vw;
 	transform: translateX(100%);
 	transition: transform .5s ease-out;
