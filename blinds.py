@@ -218,10 +218,7 @@ def steps():
 try:
     if __name__ == '__main__':
         #get_light()
-        if(read_move() == 'True'):
-            print('true')
-        else:
-            print('false')
+        read_move()
         read_steps()
         app.run(debug=True, port=5000, host='0.0.0.0')
         

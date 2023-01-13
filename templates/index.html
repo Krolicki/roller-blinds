@@ -9,6 +9,14 @@
 </head>
 <body>
 	<div class="app">
+		{% if error == 1 %}
+      <div class="main">
+				<div class="main-element" style="height: auto">
+					<p class="title-text">Wystąpił błąd!</p>
+					<p class="status-text" style="font-size: 1.5rem">Prawdopodobnie urządzenie zostało nieoczekiwanie zamknięte.<br>Sprawdź pliki konfiguracyjne.</p>
+				</div>
+			</div>
+    {% else %}
 		<div class="main">
 			<div class="main-element">
 				<p class="title-text">Rolety</p>
@@ -38,6 +46,7 @@
 				<button class="abort-button" id="abort">ZATRZYMAJ</button>
 			</div>
     </div>
+    {% endif %} 
 	</div>
 	<script>
 		const sleep = {{ sleep }}
