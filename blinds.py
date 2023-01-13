@@ -28,6 +28,8 @@ direction = None
 
 light_status = False
 
+error = False
+
 # pin sterownika silnika = pin GPIO
 in1 = 17
 in2 = 18
@@ -71,15 +73,29 @@ def cleanup():
 #odczytywanie ilości kroków z pliku
 def read_steps():
     global steps_count
-    f = open("/home/pi/scripts/roller-blinds/steps_count.txt","r")
+    f = open("/home/pi/scripts/roller-blinds/conf/steps_count.txt","r")
     steps_count = int(f.readline())
     f.close()
     
 # zapisywanie ilości kroków do pliku
 def save_steps():
     global steps_count
-    f = open("/home/pi/scripts/roller-blinds/steps_count.txt","w") #tryb nadpisywania
+    f = open("/home/pi/scripts/roller-blinds/conf/steps_count.txt","w") #tryb nadpisywania
     f.write(str(steps_count))
+    f.close()
+    
+def read_move():
+    f = open("/home/pi/scripts/roller-blinds/conf/move_status.txt","r")
+    last_move_status = f.readline()
+    f.close()
+    global error
+    if(last_move_status == 'True'):
+        error = True
+    
+def save_move():
+    global move
+    f = open("/home/pi/scripts/roller-blinds/conf/move_status.txt","w") #tryb nadpisywania
+    f.write(str(move))
     f.close()
 
 # pobieranie odczytu z czujnika światła, 1 = jest ciemno, 0 = jest jasno
@@ -94,6 +110,7 @@ def get_light():
 def roll(steps, direction):
     global steps_count
     global move
+    global error
     i = 0
     motor_step_counter = 0
     d = 0
@@ -107,11 +124,17 @@ def roll(steps, direction):
         if(steps_count >= max_step):
             move = False
             return
+    if(error):
+        move = False
+        print("Wystąpił błąd. Sprawdź pliki konfiguracyjne")
+        return
     move = True
+    save_move()
     for i in range(steps):
         #global move
         if(move == False):
             save_steps()
+            save_move()
             break
         for pin in range(0, len(motor_pins)):
             GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
@@ -119,10 +142,10 @@ def roll(steps, direction):
         steps_count += d
         time.sleep( step_sleep )
         if(steps_count <= 0 or steps_count >= max_step):
-            print("stop")
             move = False
             cleanup()
             save_steps()
+            save_move()
             if(direction == 'down'):
                 get_light()
             break
@@ -131,7 +154,8 @@ def roll(steps, direction):
 def index():
     global steps_count
     global light_status
-    return render_template('index.html', steps = steps_count, maxStep = max_step, sleep = step_sleep, light_status = light_status)
+    global error
+    return render_template('index.html', steps = steps_count, maxStep = max_step, sleep = step_sleep, light_status = light_status, error = error)
 
 @app.route("/roll-up", methods=["POST"])
 def roll_up():
@@ -188,11 +212,16 @@ def steps():
     global move
     global direction
     global light_status
-    return jsonify({'step': steps_count,'move': move, 'direction': direction, 'light_status' : light_status})
+    global error
+    return jsonify({'step': steps_count,'move': move, 'direction': direction, 'light_status' : light_status, 'error' : error})
 
 try:
     if __name__ == '__main__':
-        #get_light():
+        #get_light()
+        if(read_move() == 'True'):
+            print('true')
+        else:
+            print('false')
         read_steps()
         app.run(debug=True, port=5000, host='0.0.0.0')
         
