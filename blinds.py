@@ -23,11 +23,8 @@ step_sequence = [[1,0,0,1],
 steps_count = 0 # licznik kroków od góry
 
 move = False
-
 direction = None
-
 light_status = False
-
 error = False
 
 # pin sterownika silnika = pin GPIO
@@ -140,7 +137,6 @@ def roll(steps, direction):
             GPIO.output( motor_pins[pin], step_sequence[motor_step_counter][pin] )
         motor_step_counter = (motor_step_counter + (d * -1)) % 8
         steps_count += d
-        time.sleep( step_sleep )
         if(steps_count <= 0 or steps_count >= max_step):
             move = False
             cleanup()
@@ -148,7 +144,9 @@ def roll(steps, direction):
             save_move()
             if(direction == 'down'):
                 get_light()
+            direction = None
             break
+        time.sleep( step_sleep )
 
 @app.route('/')
 def index():
@@ -198,12 +196,12 @@ def light(action):
     global light_status
     if(action == "on"):
         if(light_status==False):
+          GPIO.output(relay, True)
           light_status = True
-          GPIO.output(relay, True) 
     if(action == "off"):
         if(light_status==True):
-          light_status = False
           GPIO.output(relay, False)
+          light_status = False
     return str(light_status)
 
 @app.route('/status', methods=['GET'])
@@ -224,4 +222,5 @@ try:
         
 except KeyboardInterrupt:
     cleanup()
+    GPIO.output(relay, False)
     exit( 1 )
