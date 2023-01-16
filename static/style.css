@@ -90,17 +90,18 @@ button{
 	display: flex;
 	justify-content: space-between;
 	color: white;
-	font-size: 9vw;
+	font-size: 5vh;
 	margin-bottom: 5vw;
 	font-weight: 600;
 }
 .blinds-header p{
 	margin: 0;
+	text-align: right;
 }
 .left-arrow{
 	transform: rotate(180deg);
-	font-size: 14vw;
-	line-height: 9vw;
+	font-size: 10vh;
+	line-height: 6vh;
 	color: black;
 	cursor: pointer;
 }
@@ -151,6 +152,7 @@ button{
 }
 .buttons-square-row button{
 	width: 45%;
+	max-height: 20vh;
 	font-size: 5vw;
 	border-radius: 20px;
 	border: none;

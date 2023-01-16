@@ -96,28 +96,37 @@ const getRollProgress = async () =>{
 				let status = 'Otwarte'
 				stepsField.innerHTML = status
 				mainRollersStatus.innerHTML = status
+				if(rollDownButton.classList.contains('disabledButton'))
+					rollDownButton.classList.remove('disabledButton')
+				if(!rollUpButton.classList.contains('disabledButton'))
+					rollUpButton.classList.add('disabledButton')
 			}
 
 			else if(currentStatus.step == maxStep){
 				let status = 'Zamknięte'
 				stepsField.innerHTML = status
 				mainRollersStatus.innerHTML = status
+				if(rollUpButton.classList.contains('disabledButton'))
+					rollUpButton.classList.remove('disabledButton')
+				if(!rollDownButton.classList.contains('disabledButton'))
+					rollDownButton.classList.add('disabledButton')
 			}
 			else{
 				let status = `Zamknięcie: ${progress}%`
 				stepsField.innerHTML = status
 				mainRollersStatus.innerHTML = status
+				if(rollDownButton.classList.contains('disabledButton'))
+					rollDownButton.classList.remove('disabledButton')
+				if(rollUpButton.classList.contains('disabledButton'))
+					rollUpButton.classList.remove('disabledButton')
 			}
 			lightStatus = currentStatus.light_status
 			setLightStatus()
 			if(rollUpButton.classList.contains('activeAction'))
 				rollUpButton.classList.remove('activeAction')
-			if(rollUpButton.classList.contains('disabledButton'))
-				rollUpButton.classList.remove('disabledButton')
 			if(rollDownButton.classList.contains('activeAction'))
 				rollDownButton.classList.remove('activeAction')
-			if(rollDownButton.classList.contains('disabledButton'))
-				rollDownButton.classList.remove('disabledButton')
+
 		}
 }
 
